@@ -24,7 +24,6 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiHorizontalRule,
-  EuiImage,
   EuiScreenReaderOnly,
   EuiSpacer,
   EuiTitle,
@@ -161,7 +160,14 @@ export const Overview: FC<Props> = ({ newsFetchResult, solutions, features }) =>
 
             <EuiHorizontalRule aria-hidden="true" margin="xl" />
 
-            <EuiFlexGroup>
+            <EuiFlexGroup
+              alignItems="flexStart"
+              className={`kbnOverviewSupplements ${
+                newsFetchResult && newsFetchResult.feedItems.length
+                  ? 'kbnOverviewSupplements--hasNews'
+                  : 'kbnOverviewSupplements--noNews'
+              }`}
+            >
               {newsFetchResult && newsFetchResult.feedItems.length ? (
                 <EuiFlexItem grow={1}>
                   <NewsFeed newsFetchResult={newsFetchResult} />
@@ -169,69 +175,61 @@ export const Overview: FC<Props> = ({ newsFetchResult, solutions, features }) =>
               ) : null}
 
               <EuiFlexItem grow={3}>
-                <section aria-labelledby="kbnOverviewMore__title" className="kbnOverviewMore">
-                  <EuiTitle size="s">
-                    <h2 id="kbnOverviewMore__title">
-                      <FormattedMessage
-                        id="kibana_overview.more.title"
-                        defaultMessage="Do more with Elastic"
-                      />
-                    </h2>
-                  </EuiTitle>
+                {solutions.length ? (
+                  <section aria-labelledby="kbnOverviewMore__title" className="kbnOverviewMore">
+                    <EuiTitle size="s">
+                      <h2 id="kbnOverviewMore__title">
+                        <FormattedMessage
+                          id="kibana_overview.more.title"
+                          defaultMessage="Do more with Elastic"
+                        />
+                      </h2>
+                    </EuiTitle>
 
-                  <EuiSpacer size="m" />
+                    <EuiSpacer size="m" />
 
-                  {solutions.length ? (
-                    <EuiFlexGroup>
+                    <EuiFlexGroup className="kbnOverviewMore__content">
                       {solutions.map(({ id, title, description, icon, path }) => (
-                        <EuiFlexItem key={id}>
+                        <EuiFlexItem className="kbnOverviewMore__item" key={id}>
                           <EuiCard
-                            title={
-                              <EuiTitle size="s">
-                                <h3>{title}</h3>
-                              </EuiTitle>
-                            }
-                            description={<span>{description}</span>}
+                            className="kbnOverviewSolution"
+                            description={description ? description : ''}
                             icon={
                               <EuiToken
+                                className="kbnOverviewSolution__icon"
+                                fill="light"
                                 iconType={icon}
                                 shape="circle"
-                                fill="light"
                                 size="l"
-                                className="homSolutionPanel__icon"
                               />
                             }
-                            image={
-                              <EuiImage
-                                // Image file names must be snake case
-                                url={addBasePath(getSolutionGraphicURL(snakeCase(id)))}
-                                alt={title}
-                              />
-                            }
+                            image={addBasePath(getSolutionGraphicURL(snakeCase(id)))}
                             onClick={createAppNavigationHandler(path)}
+                            title={title}
+                            titleElement="h3"
+                            titleSize="xs"
                           />
                         </EuiFlexItem>
                       ))}
                     </EuiFlexGroup>
-                  ) : (
-                    <EuiFlexGroup
-                      className={`kibanaOverview__Data ${
-                        addDataFeatures.length === 1 && manageDataFeatures.length === 1
-                          ? 'kibanaOverview__Data--compressed'
-                          : 'kibanaOverview__Data--expanded'
-                      }`}
-                      direction="column"
-                    >
-                      <EuiFlexItem>
-                        <AddData addBasePath={addBasePath} features={addDataFeatures} />
-                      </EuiFlexItem>
+                  </section>
+                ) : (
+                  <EuiFlexGroup
+                    className={`kbnOverviewData ${
+                      addDataFeatures.length === 1 && manageDataFeatures.length === 1
+                        ? 'kbnOverviewData--compressed'
+                        : 'kbnOverviewData--expanded'
+                    }`}
+                  >
+                    <EuiFlexItem>
+                      <AddData addBasePath={addBasePath} features={addDataFeatures} />
+                    </EuiFlexItem>
 
-                      <EuiFlexItem>
-                        <ManageData addBasePath={addBasePath} features={manageDataFeatures} />
-                      </EuiFlexItem>
-                    </EuiFlexGroup>
-                  )}
-                </section>
+                    <EuiFlexItem>
+                      <ManageData addBasePath={addBasePath} features={manageDataFeatures} />
+                    </EuiFlexItem>
+                  </EuiFlexGroup>
+                )}
               </EuiFlexItem>
             </EuiFlexGroup>
           </>

@@ -85,6 +85,72 @@ $pageWidth: 1200px;
       margin-top: $euiSizeXS;
     }
   }
+
+  h3 {
+    font-weight: inherit;
+  }
+}
+
+.kbnOverviewMore__item {
+  @include euiBreakpoint('m', 'l', 'xl') {
+    max-width: calc(33.333333333333333% - #{$euiSizeM * 2});
+  }
+}
+
+.kbnOverviewSolution__icon {
+  background-color: $euiColorEmptyShade !important;
+  box-shadow: none !important;
+  height: $euiSizeL * 2;
+  padding: $euiSizeM;
+  width: $euiSizeL * 2;
+}
+
+.kbnOverviewSupplements--noNews .kbnOverviewMore {
+  h2 {
+    @include euiBreakpoint('m', 'l', 'xl') {
+      text-align: center;
+    }
+  }
+
+  .kbnOverviewMore__content {
+    @include euiBreakpoint('m', 'l', 'xl') {
+      justify-content: center;
+    }
+  }
+}
+
+.kbnOverviewData--expanded {
+  flex-direction: column;
+
+  &,
+  & > * {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+  }
+}
+
+.kbnOverviewDataAdd__actions {
+  // Prevent children from rendering as flex items
+  display: block;
+
+  // Accounting for no `flush="both"` prop on EuiButtonEmpty
+  .euiButtonEmpty__content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.kbnOverviewDataAdd__content,
+.kbnOverviewDataManage__content {
+  & .euiIcon__fillSecondary {
+    fill: $euiColorDarkestShade;
+  }
+}
+
+.kbnOverviewDataManage__item:not(:only-child) {
+  @include euiBreakpoint('m', 'l', 'xl') {
+    flex: 0 0 calc(50% - #{$euiSizeM * 2});
+  }
 }
 
 .kbnOverviewFooter {
